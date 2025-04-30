@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  mom3:
+    build:
+      context: ./mom
+    container_name: mom3
+    command: ["0.0.0.0", "/data", "50053"]
+    ports:
+      - "50053:50053"
+    volumes:
+      - ./mom/data/mom3:/data
+    networks:
+      - momnet
+
+networks:
+  momnet:
+    driver: bridge

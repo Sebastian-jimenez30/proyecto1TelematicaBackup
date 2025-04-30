@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  gateway:
+    build:
+      context: ./mom_gateway
+    container_name: gateway
+    command: ["<IP_MOM1>:50051", "<IP_MOM2>:50052", "<IP_MOM3>:50053"]
+    ports:
+      - "8080:8080"
+    networks:
+      - momnet
+
+networks:
+  momnet:
+    driver: bridge
