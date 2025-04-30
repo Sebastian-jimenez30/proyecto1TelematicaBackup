@@ -1,0 +1,105 @@
+syntax = "proto3";
+
+package mom;
+
+option go_package = "/pb";
+
+service MomService {
+  rpc RegistrarUsuario (Credenciales) returns (RespuestaSimple);
+  rpc AutenticarUsuario (Credenciales) returns (Token);
+  rpc GuardarTokenReplica (TokenConExpiracion) returns (RespuestaSimple);
+
+  rpc CrearCola (AccionConToken) returns (RespuestaSimple);
+  rpc EliminarCola (AccionConToken) returns (RespuestaSimple);
+  rpc AutorizarUsuarioCola (AutorizacionColaRequest) returns (RespuestaSimple);
+  rpc EnviarMensajeCola (MensajeConToken) returns (RespuestaSimple);
+  rpc ConsumirMensajeCola (AccionConToken) returns (MensajeTexto);
+  rpc ListarColas (Token) returns (ListaNombres);
+
+  rpc CrearTopico (AccionConToken) returns (RespuestaSimple);
+  rpc EliminarTopico (AccionConToken) returns (RespuestaSimple);
+  rpc SuscribirseTopico (AccionConToken) returns (RespuestaSimple);
+  rpc PublicarEnTopico (MensajeConToken) returns (RespuestaSimple);
+  rpc ConsumirDesdeTopico (AccionConToken) returns (ListaMensajes);
+  rpc ListarTopicos (Token) returns (ListaNombres);
+
+  rpc EnviarEventoReplica (EventoReplica) returns (RespuestaSimple);
+  rpc SolicitarEventos (EventosRequest) returns (ListaEventos);
+
+  rpc SolicitarPendientes (PendientesRequest) returns (ListaEventos);
+}
+
+// ================== Mensajes ==================
+
+message Credenciales {
+  string username = 1;
+  string password = 2;
+}
+
+message TokenConExpiracion {
+  string username = 1;
+  string token = 2;
+  string expiracion = 3; 
+}
+
+message Token {
+  string token = 1;
+}
+
+message AccionConToken {
+  string token = 1;
+  string nombre = 2;
+}
+
+message MensajeConToken {
+  string token = 1;
+  string nombre = 2;
+  string contenido = 3;
+}
+
+message AutorizacionColaRequest {
+  string token = 1;
+  string nombre = 2;
+  string usuarioObjetivo = 3;
+}
+
+message MensajeTexto {
+  string contenido = 1;
+  string remitente = 2;
+  string canal = 3;
+  string timestamp = 4;
+}
+
+message ListaMensajes {
+  repeated MensajeTexto mensajes = 1;
+}
+
+message ListaNombres {
+  repeated string nombres = 1;
+}
+
+message EventoReplica {
+  int32 id = 1;
+  string tipo = 2;
+  string entidad = 3;
+  string datos = 4;
+  string timestamp = 5;
+  string id_origen = 6; 
+}
+
+message ListaEventos {
+  repeated EventoReplica eventos = 1;
+}
+
+message EventosRequest {
+  string desde_timestamp = 1;
+}
+
+message PendientesRequest {
+  string nodo_destino = 1;  
+}
+
+message RespuestaSimple {
+  bool exito = 1;
+  string mensaje = 2;
+}

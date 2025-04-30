@@ -1,0 +1,8 @@
+{
+    "nodos": [
+      { "id": "mom1", "host": "localhost", "puerto": 50051 },
+      { "id": "mom2", "host": "localhost", "puerto": 50052 },
+      { "id": "mom3", "host": "localhost", "puerto": 50053 }
+    ]
+  }
+  

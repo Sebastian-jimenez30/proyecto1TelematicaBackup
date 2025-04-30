@@ -1,0 +1,32 @@
+@startuml componentes
+package "mom_gateway (Go)" {
+    [main.go]
+    [routes.go]
+    [handlers/*]
+    [cluster/*]
+    [pb/*]
+}
+
+package "MOM Node (C++)" {
+    [grpc_server]
+    [broker.cpp/hpp]
+    [persistencia.cpp/hpp]
+    [cola.cpp/hpp]
+    [topico.cpp/hpp]
+    [mensaje.cpp/hpp]
+}
+
+[main.go] --> [routes.go]
+[routes.go] --> [handlers/*]
+[handlers/*] --> [cluster/*]
+[handlers/*] --> [pb/*] : gRPC stubs
+
+[cluster/*] --> [pb/*] : gRPC stubs
+[cluster/*] --> [grpc_server] : gRPC
+
+[grpc_server] --> [broker.cpp/hpp]
+[broker.cpp/hpp] --> [persistencia.cpp/hpp]
+[broker.cpp/hpp] --> [cola.cpp/hpp]
+[broker.cpp/hpp] --> [topico.cpp/hpp]
+[broker.cpp/hpp] --> [mensaje.cpp/hpp]
+@enduml

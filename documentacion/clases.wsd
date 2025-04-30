@@ -1,0 +1,82 @@
+@startuml clases
+class Persistencia {
+  +inicializarBaseDeDatos()
+  +crearUsuario(username, password)
+  +verificarCredenciales(username, password)
+  +guardarToken(username, token, expiracion)
+  +validarTokenActivo(token)
+  +guardarMensaje(mensaje)
+  +cargarMensajesPorCanal(canal, tipo)
+  +cargarMensajesDesdeOffset(topico, offset, limite)
+}
+
+class Usuario {
+  +username: string
+  +password_hash: string
+  +generarToken(): string
+  +getExpiracion()
+  +verificarToken(token, username)
+}
+
+class Mensaje {
+  +id: int
+  +remitente_id: int
+  +canal: string
+  +tipo: string
+  +contenido: string
+  +estado: string
+  +timestamp: string
+}
+
+class Cola {
+  +nombre: string
+  +crear()
+  +eliminar()
+  +enviarMensaje()
+  +consumirMensaje()
+  +autorizarUsuario()
+}
+
+class Topico {
+  +nombre: string
+  +crear()
+  +eliminar()
+  +publicarMensaje()
+  +suscribirse()
+  +consumirMensajes()
+}
+
+class Broker {
+  +registrarUsuario()
+  +autenticarUsuario()
+  +crearCola()
+  +eliminarCola()
+  +enviarMensajeACola()
+  +consumirMensajeDeCola()
+  +autorizarCola()
+  +crearTopico()
+  +eliminarTopico()
+  +suscribirATopico()
+  +publicarEnTopico()
+  +consumirDesdeTopico()
+}
+
+class Log {
+  +id: int
+  +usuario_id: int
+  +actividad: string
+  +fecha: string
+}
+
+Persistencia "1" -- "*" Mensaje : Guarda/Carga
+Persistencia "1" -- "*" Usuario : Guarda/Carga
+Persistencia "1" -- "*" Log : Guarda/Carga
+Cola "1" -- "*" Mensaje
+Topico "1" -- "*" Mensaje
+Usuario "1" -- "*" Cola
+Usuario "1" -- "*" Topico
+Usuario "1" -- "*" Log
+Broker "1" o-- "1" Persistencia
+Broker "1" o-- "*" Cola
+Broker "1" o-- "*" Topico
+@enduml

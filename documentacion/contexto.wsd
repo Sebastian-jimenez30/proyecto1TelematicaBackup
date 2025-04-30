@@ -1,0 +1,18 @@
+@startuml C4_Context
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(usuario, "Usuario", "Utiliza el sistema para enviar y recibir mensajes")
+
+System_Boundary(sistema, "Middleware MOM") {
+    System(gateway, "API Gateway", "Recibe peticiones REST y las redirige por gRPC")
+    System_Ext(mom1, "MOM Nodo 1 (C++)", "Gestión y persistencia de colas/tópicos")
+    System_Ext(mom2, "MOM Nodo 2 (C++)", "Nodo replicado")
+    System_Ext(mom3, "MOM Nodo 3 (C++)", "Nodo replicado")
+}
+
+Rel(usuario, gateway, "Usa", "HTTP/REST")
+Rel(gateway, mom1, "Comunica (gRPC)")
+Rel(gateway, mom2, "Comunica (gRPC)")
+Rel(gateway, mom3, "Comunica (gRPC)")
+
+@enduml

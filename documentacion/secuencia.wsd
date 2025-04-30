@@ -1,0 +1,16 @@
+@startuml secuencia
+actor Usuario
+participant "API Gateway (REST)" as REST
+participant "Broker (gRPC Client)" as Gateway
+participant "Nodo MOM (Broker gRPC Server)" as MOM
+participant "Persistencia" as DB
+
+Usuario -> REST : POST /colas/:nombre/enviar
+REST -> Gateway : EnviarMensajeCola(nombre, contenido, token)
+Gateway -> MOM : EnviarMensajeCola (gRPC)
+MOM -> DB : guardarMensaje()
+DB --> MOM : OK
+MOM --> Gateway : OK / Error
+Gateway --> REST : OK / Error
+REST --> Usuario : Mensaje enviado
+@enduml

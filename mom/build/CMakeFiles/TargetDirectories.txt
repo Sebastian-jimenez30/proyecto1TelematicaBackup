@@ -1,0 +1,4 @@
+/home/sebastian/projects/Proyecto1_TopicosTelematica-main/mom/build/CMakeFiles/proto_files_target.dir
+/home/sebastian/projects/Proyecto1_TopicosTelematica-main/mom/build/CMakeFiles/mom_server.dir
+/home/sebastian/projects/Proyecto1_TopicosTelematica-main/mom/build/CMakeFiles/edit_cache.dir
+/home/sebastian/projects/Proyecto1_TopicosTelematica-main/mom/build/CMakeFiles/rebuild_cache.dir

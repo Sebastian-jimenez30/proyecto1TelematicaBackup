@@ -1,0 +1,38 @@
+@startuml casouso
+actor Usuario
+actor ClienteREST
+actor Administrador
+
+rectangle "MOM Gateway (API REST)" {
+  Usuario -- (Registrar usuario)
+  Usuario -- (Login)
+  Usuario -- (Crear cola)
+  Usuario -- (Eliminar cola)
+  Usuario -- (Enviar mensaje a cola)
+  Usuario -- (Consumir mensaje de cola)
+  Usuario -- (Autorizar usuario en cola)
+  Usuario -- (Crear tópico)
+  Usuario -- (Eliminar tópico)
+  Usuario -- (Suscribirse a tópico)
+  Usuario -- (Publicar en tópico)
+  Usuario -- (Consumir mensajes de tópico)
+  Usuario -- (Listar colas)
+  Usuario -- (Listar tópicos)
+}
+
+ClienteREST -- (Consumir API REST)
+
+rectangle "MOM Cluster (gRPC)" {
+  (Registrar usuario) ..> (Replicación en todos los nodos) : incluye
+  (Login) ..> (Login en todos los nodos) : incluye
+  (Crear cola) ..> (Replicar creación en nodos)
+  (Eliminar cola) ..> (Replicar eliminación)
+  (Enviar mensaje a cola) ..> (Replicar mensaje)
+  (Crear tópico) ..> (Replicar creación)
+  (Eliminar tópico) ..> (Replicar eliminación)
+  (Publicar en tópico) ..> (Replicar mensaje)
+}
+
+Administrador -- (Monitorear Logs)
+Administrador -- (Ver estado de nodos)
+@enduml

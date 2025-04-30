@@ -1,0 +1,20 @@
+@startuml C4_Components
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Container(grpcServer, "gRPC Server (C++)", "C++ Application", "Lógica del MOM")
+
+Component(auth, "Auth", "Valida tokens y credenciales")
+Component(broker, "Broker", "Orquesta lógica de colas y tópicos")
+Component(persistencia, "Persistencia", "Acceso a SQLite")
+Component(topico, "Tópico", "Publicación y consumo")
+Component(cola, "Cola", "Encolado y lectura de mensajes")
+Component(usuario, "Usuario", "Generación y validación de tokens JWT")
+
+Rel(grpcServer, auth, "Usa")
+Rel(grpcServer, broker, "Usa")
+Rel(broker, persistencia, "Lee/Escribe")
+Rel(broker, cola, "Crea/Consume")
+Rel(broker, topico, "Publica/Suscribe")
+Rel(broker, usuario, "Autentica")
+
+@enduml

@@ -1,0 +1,17 @@
+@startuml C4_Containers
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+System_Boundary(sistema, "Middleware MOM") {
+    Container(cliente, "Cliente REST", "Postman, Frontend", "Envía peticiones HTTP")
+    Container(gateway, "API Gateway", "Go + Gin", "Maneja la lógica de redirección REST → gRPC")
+    Container(clusterGo, "Cluster Manager", "Go", "Decide el MOM responsable y replica")
+    Container(grpcServer, "gRPC Server", "C++", "Expone operaciones MOM")
+    Container(db, "Base de Datos SQLite", "SQLite", "Persistencia de mensajes, usuarios, colas y tópicos")
+}
+
+Rel(cliente, gateway, "Envía peticiones", "REST/HTTP")
+Rel(gateway, clusterGo, "Redirige llamadas gRPC")
+Rel(clusterGo, grpcServer, "Comunica con", "gRPC")
+Rel(grpcServer, db, "Lee/Escribe", "SQL")
+
+@enduml

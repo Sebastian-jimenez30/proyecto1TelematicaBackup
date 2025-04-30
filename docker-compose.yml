@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  mom1:
+    build:
+      context: ./mom
+    container_name: mom1
+    command: ["0.0.0.0", "/data", "50051"]
+    ports:
+      - "50051:50051"
+    volumes:
+      - ./mom/data/mom1:/data
+    networks:
+      - momnet
+
+  mom2:
+    build:
+      context: ./mom
+    container_name: mom2
+    command: ["0.0.0.0", "/data", "50052"]
+    ports:
+      - "50052:50052"
+    volumes:
+      - ./mom/data/mom2:/data
+    networks:
+      - momnet
+
+  mom3:
+    build:
+      context: ./mom
+    container_name: mom3
+    command: ["0.0.0.0", "/data", "50053"]
+    ports:
+      - "50053:50053"
+    volumes:
+      - ./mom/data/mom3:/data
+    networks:
+      - momnet
+
+  gateway:
+    build:
+      context: ./mom_gateway
+    container_name: gateway
+    command: ["mom1:50051", "mom2:50052", "mom3:50053"]
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mom1
+      - mom2
+      - mom3
+    networks:
+      - momnet
+
+networks:
+  momnet:
+    driver: bridge
