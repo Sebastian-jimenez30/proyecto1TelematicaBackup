@@ -2,8 +2,7 @@ version: '3.8'
 
 services:
   mom1:
-    build:
-      context: ./mom
+    image: sebastianjimenez30/mom_server
     container_name: mom1
     command: ["0.0.0.0", "/data", "50051"]
     ports:
@@ -12,7 +11,3 @@ services:
       - ./mom/data/mom1:/data
     networks:
       - momnet
-
-networks:
-  momnet:
-    driver: bridge
