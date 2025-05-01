@@ -1,9 +1,9 @@
 services:
   mom1:
     image: sebastianjimenez30/mom_server
-    container_name: mom1
+    container_name: mom3
     command: ["0.0.0.0", "/data", "50053"]
     ports:
       - "50053:50053"
     volumes:
-      - ./mom/data/mom2:/data
+      - ./mom/data/mom3:/data
