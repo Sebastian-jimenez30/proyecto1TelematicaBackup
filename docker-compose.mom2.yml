@@ -7,3 +7,4 @@ services:
       - "50052:50052"
     volumes:
       - ./mom/data/mom2:/data
+    restart: always 
