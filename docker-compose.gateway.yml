@@ -5,7 +5,7 @@ services:
     build:
       context: ./mom_gateway
     container_name: gateway
-    command: ["<IP_MOM1>:50051", "<IP_MOM2>:50052", "<IP_MOM3>:50053"]
+    command: ["172.31.23.47:50051", "172.31.21.77:50052", "172.31.27.228:50053"]
     ports:
       - "8080:8080"
     networks:
