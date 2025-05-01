@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+<h2>{{ titulo }}</h2>
+<pre>{{ respuesta | tojson(indent=2) }}</pre>
+<a href="/">Volver</a>
+{% endblock %}
+
+
+# flask_client/static/style.css
+body {
+    font-family: Arial, sans-serif;
+    margin: 2em;
+}
+h1 {
+    color: #222;
+}
+form {
+    margin-bottom: 1.5em;
+    padding: 1em;
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+}
+input, button {
+    margin: 0.5em;
+}
+pre {
+    background: #eee;
+    padding: 1em;
+    overflow-x: auto;
+}

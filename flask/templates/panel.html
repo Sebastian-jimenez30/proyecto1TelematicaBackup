@@ -1,0 +1,133 @@
+{% extends 'layout.html' %}
+{% block contenido %}
+
+<div class="container mt-4">
+  <h2 class="mb-4 text-center">Panel de Operaciones</h2>
+
+  <div class="row">
+    <!-- Sección de Colas -->
+    <div class="col-md-6">
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">📦 Operaciones sobre Colas</div>
+        <div class="card-body">
+          <form class="mb-2 accion-form" data-url="/accion/crear_cola">
+            <input name="nombre" class="form-control mb-1" placeholder="Nombre de la cola">
+            <button class="btn btn-outline-primary w-100">Crear Cola</button>
+          </form>
+
+          <form class="mb-2 accion-form" data-url="/accion/eliminar_cola">
+            <input name="nombre" class="form-control mb-1" placeholder="Nombre de la cola">
+            <button class="btn btn-outline-danger w-100">Eliminar Cola</button>
+          </form>
+
+          <form class="mb-2 accion-form" data-url="/accion/autorizar_cola">
+            <input name="nombre" class="form-control mb-1" placeholder="Nombre de la cola">
+            <input name="usuario" class="form-control mb-1" placeholder="Usuario a autorizar">
+            <button class="btn btn-outline-warning w-100">Autorizar Usuario</button>
+          </form>
+
+          <form class="mb-2 accion-form" data-url="/accion/enviar_mensaje_cola">
+            <input name="nombre" class="form-control mb-1" placeholder="Nombre de la cola">
+            <textarea name="contenido" class="form-control mb-1" placeholder="Mensaje"></textarea>
+            <button class="btn btn-outline-success w-100">Enviar Mensaje</button>
+          </form>
+
+          <form class="mb-2 accion-form" data-url="/accion/consumir_cola">
+            <input name="nombre" class="form-control mb-1" placeholder="Nombre de la cola">
+            <button class="btn btn-outline-dark w-100">Consumir Mensaje</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de Tópicos -->
+    <div class="col-md-6">
+      <div class="card mb-4">
+        <div class="card-header bg-secondary text-white">🧩 Operaciones sobre Tópicos</div>
+        <div class="card-body">
+          <form class="mb-2 accion-form" data-url="/accion/crear_topico">
+            <input name="nombre" class="form-control mb-1" placeholder="Nombre del tópico">
+            <button class="btn btn-outline-primary w-100">Crear Tópico</button>
+          </form>
+
+          <form class="mb-2 accion-form" data-url="/accion/eliminar_topico">
+            <input name="nombre" class="form-control mb-1" placeholder="Nombre del tópico">
+            <button class="btn btn-outline-danger w-100">Eliminar Tópico</button>
+          </form>
+
+          <form class="mb-2 accion-form" data-url="/accion/suscribir_topico">
+            <input name="nombre" class="form-control mb-1" placeholder="Nombre del tópico">
+            <button class="btn btn-outline-info w-100">Suscribirse</button>
+          </form>
+
+          <form class="mb-2 accion-form" data-url="/accion/publicar_topico">
+            <input name="nombre" class="form-control mb-1" placeholder="Nombre del tópico">
+            <textarea name="contenido" class="form-control mb-1" placeholder="Mensaje"></textarea>
+            <button class="btn btn-outline-success w-100">Publicar Mensaje</button>
+          </form>
+
+          <form class="mb-2 accion-form" data-url="/accion/consumir_topico">
+            <input name="nombre" class="form-control mb-1" placeholder="Nombre del tópico">
+            <button class="btn btn-outline-dark w-100">Consumir Mensajes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Listados generales -->
+  <div class="row">
+    <div class="col-md-12 d-flex justify-content-center gap-3">
+      <button class="btn btn-outline-secondary accion-boton" data-url="/accion/listar_colas">Listar Colas</button>
+      <button class="btn btn-outline-secondary accion-boton" data-url="/accion/listar_topicos">Listar Tópicos</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="respuestaModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Respuesta del servidor</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <pre id="modal-body-content" class="text-wrap bg-light p-3 rounded"></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function mostrarModal(respuesta, titulo = "Respuesta del servidor") {
+  const modal = new bootstrap.Modal(document.getElementById('respuestaModal'));
+  document.getElementById("modalLabel").innerText = titulo;
+  document.getElementById("modal-body-content").innerText = JSON.stringify(respuesta, null, 2);
+  modal.show();
+}
+
+document.querySelectorAll(".accion-form").forEach(form => {
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(e.target));
+    const url = form.dataset.url;
+    const res = await fetch(url, {
+      method: "POST",
+      body: new URLSearchParams(data),
+    });
+    const json = await res.json();
+    mostrarModal(json, url);
+  });
+});
+
+document.querySelectorAll(".accion-boton").forEach(btn => {
+  btn.addEventListener("click", async () => {
+    const url = btn.dataset.url;
+    const res = await fetch(url, { method: "POST" });
+    const json = await res.json();
+    mostrarModal(json, url);
+  });
+});
+</script>
+{% endblock %}

@@ -3,7 +3,7 @@
 import requests
 import json
 
-BASE_URL = "http://localhost:8080"
+BASE_URL = "http://34.238.251.201:8080"
 
 def menu():
     print("\n=== Menú Principal ===")
