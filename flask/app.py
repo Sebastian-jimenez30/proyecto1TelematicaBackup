@@ -3,7 +3,7 @@ import requests
 
 app = Flask(__name__)
 app.secret_key = 'clave-secreta-super-segura'
-BASE_URL = "http://3.90.50.49:8080"
+BASE_URL = "http://34.207.71.83:8080"
 
 @app.route('/')
 def index():
